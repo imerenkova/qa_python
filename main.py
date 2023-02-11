@@ -47,3 +47,21 @@ class BooksCollector:
     # получаем список Избранных книг
     def get_list_of_favorites_books(self):
         return self.favorites
+
+
+collector = BooksCollector()
+# book = 'Похититель теней'
+# collector.add_new_book(book)
+# collector.set_book_rating('Великий Гэтсби', 6)
+#print(collector.get_books_rating())
+#print(collector.get_book_rating('Великий Гэтсби'))
+#print(collector.get_books_with_specific_rating(1))
+#print(collector.__dict__)
+
+collector.add_new_book('Обломов')
+collector.set_book_rating('Обломов', 7)
+
+print(collector.get_books_with_specific_rating(1))
+
+
+#print(type(collector.get_books_rating()) is dict)
