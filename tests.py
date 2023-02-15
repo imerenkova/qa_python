@@ -38,7 +38,7 @@ class TestBooksCollector:
         collector.add_new_book(book_name)
 
         # проверяем, что добавилась одна
-        assert len(collector.get_books_rating()) == 1
+        assert collector.get_books_rating() == {book_name: 1}
 
     # test №4
     @pytest.mark.parametrize('book_name, rating',
@@ -74,7 +74,7 @@ class TestBooksCollector:
         collector.add_new_book(book_name)
         collector.set_book_rating(book_name, 7)
 
-        assert type(collector.get_books_rating()) is dict
+        assert collector.get_books_rating() == {book_name: 7}
 
     # test №8
     @pytest.mark.parametrize('rating', [-1, 0, 1, 10, 11, '', None, 'интересная книга'])
@@ -96,7 +96,10 @@ class TestBooksCollector:
             collector.add_new_book(book)
             collector.set_book_rating(book, rating)
 
-        assert len(collector.get_books_with_specific_rating(7)) == 4
+        assert collector.get_books_with_specific_rating(7) == ['Атлант расправил плечи',
+                                                               'Автостопом по Галактике',
+                                                               'Безумная звезда',
+                                                               'Нездешние']
 
     # test №10
     def test_get_books_with_specific_rating_book_with_rating1_not_exist(self, collector):
@@ -114,17 +117,18 @@ class TestBooksCollector:
         collector.add_new_book('Девушка, которая играла с огнем')
         collector.add_book_in_favorites('Девушка, которая играла с огнем')
 
-        assert len(collector.get_list_of_favorites_books()) == 2
+        assert collector.get_list_of_favorites_books() == ['Девушка с татуировкой дракона',
+                                                           'Девушка, которая играла с огнем']
 
     # test №12
-    def test_add_book_in_favorites_add_books_in_favourites_twice(self, collector):
+    def test_add_book_in_favorites_add_books_in_favourites_twice_saved_one(self, collector):
         book_name = 'Властелин колец: Братство кольца'
         collector.add_new_book(book_name)
         collector.set_book_rating(book_name, 10)
         collector.add_book_in_favorites(book_name)
         collector.add_book_in_favorites(book_name)
 
-        assert len(collector.get_list_of_favorites_books()) == 1
+        assert collector.get_list_of_favorites_books() == ['Властелин колец: Братство кольца']
 
     # test №13
     def test_add_book_in_favorites_book_no_in_collector(self, collector):
@@ -156,7 +160,7 @@ class TestBooksCollector:
         collector.delete_book_from_favorites(books[1])
         collector.delete_book_from_favorites(books[2])
 
-        assert len(collector.get_list_of_favorites_books()) == 1
+        assert collector.get_list_of_favorites_books() == ['Код да Винчи']
 
     # test №16
     def test_delete_book_from_favorites_no_one_book_in_favourites(self, collector):
@@ -178,7 +182,7 @@ class TestBooksCollector:
         collector.add_book_in_favorites(book)
 
         assert collector.delete_book_from_favorites('Война и мир') is None \
-               and len(collector.get_list_of_favorites_books()) == 1
+               and collector.get_list_of_favorites_books() == [book]
 
     # test #18
     def test_get_list_of_favorites_books_favourites_books_store_in_list(self, collector):
@@ -186,4 +190,4 @@ class TestBooksCollector:
         collector.add_new_book(book_name)
         collector.add_book_in_favorites(book_name)
 
-        assert type(collector.get_list_of_favorites_books()) is list
+        assert collector.get_list_of_favorites_books() == [book_name]

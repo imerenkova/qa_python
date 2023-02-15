@@ -3,7 +3,7 @@ import pytest
 from main import BooksCollector
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def collector():
     books_collector = BooksCollector()
     return books_collector
